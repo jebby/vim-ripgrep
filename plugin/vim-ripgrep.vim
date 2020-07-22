@@ -4,25 +4,11 @@ endif
 
 let g:loaded_rg = 1
 
-if !exists('g:rg_binary')
-  let g:rg_binary = 'rg'
-endif
-
-if !exists('g:rg_format')
-  let g:rg_format = "%f:%l:%c:%m"
-endif
-
-if !exists('g:rg_command')
-  let g:rg_command = g:rg_binary . ' --vimgrep'
-endif
-
-if !exists('g:rg_root_types')
-  let g:rg_root_types = ['.git']
-endif
-
-if !exists('g:rg_window_location')
-  let g:rg_window_location = 'botright'
-endif
+let g:rg_binary = get(g:, 'rg_binary', 'rg')
+let g:rg_format = get(g:, 'rg_format', '%f:%l:%c:%m')
+let g:rg_command = get(g:, 'rg_command', g:rg_binary . ' --vimgrep')
+let g:rg_root_types = get(g:, 'rg_root_types', ['.git'])
+let g:rg_window_location = get(g:, 'rg_window_location', 'botright')
 
 fun! g:RgVisual() range
   call s:RgGrepContext(function('s:RgSearch'), '"' . s:RgGetVisualSelection() . '"')
