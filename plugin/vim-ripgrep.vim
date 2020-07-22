@@ -12,6 +12,7 @@ let g:rg_window_location = get(g:, 'rg_window_location', 'botright')
 let g:rg_loclist = get(g:, 'rg_loclist', 0)
 let g:rg_highlight = get(g:, 'rg_highlight', 0)
 let g:rg_highlight_type = get(g:, 'rg_highlight_type', 'Debug')
+let g:rg_derive_root = get(g:, 'rg_derive_root', 0)
 
 fun! g:RgVisual() range
   call s:RgGrepContext(function('s:RgSearch'), '"' . s:RgGetVisualSelection() . '"')
@@ -80,7 +81,7 @@ fun! s:RgGrepContext(search, txt)
     let &shellpipe="&>"
   endif
 
-  if exists('g:rg_derive_root')
+  if g:rg_derive_root
     call s:RgPathContext(a:search, a:txt)
   else
     call a:search(a:txt)
@@ -128,7 +129,7 @@ fun! s:RgHasFile(path)
 endfun
 
 fun! s:RgShowRoot()
-  if exists('g:rg_derive_root')
+  if g:rg_derive_root
     echo s:RgRootDir()
   else
     echo getcwd()
