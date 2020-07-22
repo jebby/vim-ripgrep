@@ -16,6 +16,7 @@ Word under cursor will be searched if no argument is passed to `Rg`
 | g:rg_derive_root     | false                     | true if you want to find project root from cwd
 | g:rg_root_types      | ['.git']                  | list of files/dir found in project root
 | g:rg_window_location | botright                  | quickfix window location
+| g:rg_loclist         | 0                         | use location list instead of quickfix
     
 ## misc
 
