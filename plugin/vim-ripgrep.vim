@@ -9,6 +9,7 @@ let g:rg_format = get(g:, 'rg_format', '%f:%l:%c:%m')
 let g:rg_command = get(g:, 'rg_command', g:rg_binary . ' --vimgrep')
 let g:rg_root_types = get(g:, 'rg_root_types', ['.git'])
 let g:rg_window_location = get(g:, 'rg_window_location', 'botright')
+let g:rg_loclist = get(g:, 'rg_loclist', 0)
 
 fun! g:RgVisual() range
   call s:RgGrepContext(function('s:RgSearch'), '"' . s:RgGetVisualSelection() . '"')
@@ -44,15 +45,20 @@ fun! s:RgSearch(txt)
   let l:rgopts .= &ignorecase ? '-i ' : ''
   let l:rgopts .= &smartcase ? '-S ' : ''
   let l:rgopts .= a:txt
-  silent! exe 'grep!' . l:rgopts
-  if len(getqflist())
-    exe g:rg_window_location 'copen'
+  let l:grep = (g:rg_loclist ? 'l' : '') . 'grep!'
+  silent! exe l:grep . l:rgopts
+  let l:what = {'size': 0}
+  let l:entries = g:rg_loclist ? getloclist('.', l:what) : getqflist(l:what)
+  let l:open = (g:rg_loclist ? 'l': 'c') . 'open'
+  let l:close = (g:rg_loclist ? 'l': 'c') . 'close'
+  if entries.size
+    exe g:rg_window_location . ' ' . l:open
     redraw!
     if exists('g:rg_highlight')
       call s:RgHighlight(a:txt)
     endif
   else
-    cclose
+    exe l:close
     redraw!
     echo "No match found for " . a:txt
   endif
