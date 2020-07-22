@@ -10,6 +10,8 @@ let g:rg_command = get(g:, 'rg_command', g:rg_binary . ' --vimgrep')
 let g:rg_root_types = get(g:, 'rg_root_types', ['.git'])
 let g:rg_window_location = get(g:, 'rg_window_location', 'botright')
 let g:rg_loclist = get(g:, 'rg_loclist', 0)
+let g:rg_highlight = get(g:, 'rg_highlight', 0)
+let g:rg_highlight_type = get(g:, 'rg_highlight_type', 'Debug')
 
 fun! g:RgVisual() range
   call s:RgGrepContext(function('s:RgSearch'), '"' . s:RgGetVisualSelection() . '"')
@@ -54,7 +56,7 @@ fun! s:RgSearch(txt)
   if entries.size
     exe g:rg_window_location . ' ' . l:open
     redraw!
-    if exists('g:rg_highlight')
+    if g:rg_highlight
       call s:RgHighlight(a:txt)
     endif
   else
@@ -99,8 +101,7 @@ fun! s:RgPathContext(search, txt)
 endfun
 
 fun! s:RgHighlight(txt)
-  let @/=escape(substitute(a:txt, '"', '', 'g'), '|')
-  call feedkeys(":let &hlsearch=1\<CR>", 'n')
+  call matchadd(g:rg_highlight_type, a:txt)
 endfun
 
 fun! s:RgRootDir()
