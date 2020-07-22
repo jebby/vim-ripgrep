@@ -102,7 +102,15 @@ fun! s:RgPathContext(search, txt)
 endfun
 
 fun! s:RgHighlight(txt)
-  call matchadd(g:rg_highlight_type, a:txt)
+  function! MatchAdd() closure
+    call clearmatches()
+    call matchadd(g:rg_highlight_type, a:txt)
+  endfunction
+  augroup rg_highlight
+    autocmd! * <buffer>
+    autocmd BufWinEnter <buffer> call MatchAdd()
+  augroup END
+  doautocmd BufWinEnter
 endfun
 
 fun! s:RgRootDir()
