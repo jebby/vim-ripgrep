@@ -46,11 +46,11 @@ fun! s:RgSearch(txt)
   let l:rgopts .= &smartcase ? '-S ' : ''
   let l:rgopts .= a:txt
   let l:grep = (g:rg_loclist ? 'l' : '') . 'grep!'
+  let l:open = (g:rg_loclist ? 'l': 'c') . 'open'
+  let l:close = (g:rg_loclist ? 'l': 'c') . 'close'
   silent! exe l:grep . l:rgopts
   let l:what = {'size': 0}
   let l:entries = g:rg_loclist ? getloclist('.', l:what) : getqflist(l:what)
-  let l:open = (g:rg_loclist ? 'l': 'c') . 'open'
-  let l:close = (g:rg_loclist ? 'l': 'c') . 'close'
   if entries.size
     exe g:rg_window_location . ' ' . l:open
     redraw!
