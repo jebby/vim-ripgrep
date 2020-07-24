@@ -6,7 +6,7 @@ let g:loaded_rg = 1
 
 let g:rg_binary = get(g:, 'rg_binary', 'rg')
 let g:rg_format = get(g:, 'rg_format', '%f:%l:%c:%m')
-let g:rg_command = get(g:, 'rg_command', g:rg_binary . ' --vimgrep')
+let g:rg_opts = get(g:, 'rg_opts', '--vimgrep')
 let g:rg_root_types = get(g:, 'rg_root_types', ['.git'])
 let g:rg_window_location = get(g:, 'rg_window_location', 'botright')
 let g:rg_loclist = get(g:, 'rg_loclist', 0)
@@ -70,7 +70,7 @@ endfun
 fun! s:RgGrepContext(search, txt)
   let l:grepprgb = &grepprg
   let l:grepformatb = &grepformat
-  let &grepprg = g:rg_command
+  let &grepprg = g:rg_binary . ' ' . g:rg_opts
   let &grepformat = g:rg_format
   let l:te = &t_te
   let l:ti = &t_ti
