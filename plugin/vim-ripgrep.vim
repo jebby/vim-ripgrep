@@ -54,7 +54,7 @@ fun! s:RgSearch(txt)
   silent! exe l:grep . l:rgopts
   let l:what = {'size': 0}
   let l:entries = g:rg_loclist ? getloclist('.', l:what) : getqflist(l:what)
-  if entries.size
+  if l:entries.size
     exe g:rg_window_location . ' ' . l:open
     redraw!
     if g:rg_highlight
